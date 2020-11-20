@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="344.0" prefWidth="533.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Login">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Login">
     <left>
-        <FlowPane alignment="CENTER_RIGHT" orientation="VERTICAL" prefHeight="128.0" prefWidth="208.0" BorderPane.alignment="CENTER">
+        <FlowPane alignment="CENTER_RIGHT" orientation="VERTICAL" prefHeight="126.0" prefWidth="128.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Username">
                     <FlowPane.margin>
@@ -39,7 +39,7 @@
         </FlowPane>
     </left>
     <right>
-        <FlowPane alignment="CENTER_LEFT" orientation="VERTICAL" prefHeight="128.0" prefWidth="322.0" BorderPane.alignment="CENTER">
+        <FlowPane alignment="CENTER_LEFT" orientation="VERTICAL" prefHeight="126.0" prefWidth="206.0" BorderPane.alignment="CENTER">
             <children>
                 <TextField fx:id="username" onKeyReleased="#loginByKey">
                     <FlowPane.margin>
@@ -61,7 +61,7 @@
         </FlowPane>
     </right>
     <bottom>
-        <FlowPane alignment="CENTER" prefHeight="146.0" prefWidth="534.0" BorderPane.alignment="CENTER">
+        <FlowPane alignment="CENTER" prefHeight="64.0" prefWidth="210.0" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="loginBtn" mnemonicParsing="false" onMouseClicked="#loginByClick" text="Log in">
                     <font>
@@ -82,7 +82,4 @@
             </children>
         </FlowPane>
     </bottom>
-    <top>
-        <FlowPane prefHeight="70.0" prefWidth="534.0" BorderPane.alignment="CENTER" />
-    </top>
 </BorderPane>

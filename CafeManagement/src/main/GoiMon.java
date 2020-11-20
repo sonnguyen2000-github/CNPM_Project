@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class GoiMon extends Frame implements ActionListener{
     /**
@@ -11,16 +12,16 @@ public class GoiMon extends Frame implements ActionListener{
      */
     private static final long serialVersionUID = 1L;
     Panel panelCenter = new Panel();
-    Panel panelSub = new Panel(new GridLayout(4, 3, 10, 10));
+    Panel panelSub = new Panel(new GridLayout(4, 3, 5, 5));
     Panel panelSouth = new Panel();
     Panel panelSpace = new Panel();
     Label lbSpace = new Label(" ");
     Label lbGoiMon = new Label("GỌI MÓN", Label.CENTER);
-    Label lbMaGoi = new Label("Lượt gọi:");
-    Label lbBan = new Label("Bàn:");
-    Label lbDoUong = new Label("Đồ uống:");
-    Label lbSoLuong = new Label("Số lượng:");
-    TextField txtMaGoi = new TextField("Vd: 23 là Bàn 2,Lượt gọi 3 kiểu kiểu vậy o(>w<)o");
+    Label lbMaGoi = new Label("Lượt gọi:", Label.CENTER);
+    Label lbBan = new Label("Bàn:", Label.CENTER);
+    Label lbDoUong = new Label("Đồ uống:", Label.CENTER);
+    Label lbSoLuong = new Label("Số lượng:", Label.CENTER);
+    TextField txtMaGoi = new TextField();
     Choice chBan = new Choice();
     Choice chTenBan = new Choice();
     Choice chDoUong = new Choice();
@@ -28,7 +29,7 @@ public class GoiMon extends Frame implements ActionListener{
     TextField txtSoLuong = new TextField();
     Button buttLuu = new Button("   Lưu   ");
     Button buttThoat = new Button(" Quay lại ");
-    java.sql.Statement stmt;
+    Statement stmt;
     DatabaseConnection connection;
     ResultSet rs;
 
@@ -39,6 +40,27 @@ public class GoiMon extends Frame implements ActionListener{
         panelSub.add(lbMaGoi);
         panelSub.add(txtMaGoi);
         panelSub.add(lbBan);
+        panelSub.add(chTenBan);
+        panelSub.add(lbDoUong);
+        panelSub.add(chTenDoUong);
+        panelSub.add(lbSoLuong);
+        panelSub.add(txtSoLuong);
+        //
+        panelCenter.add(panelSub);
+        panelSpace.add(lbSpace);
+        panelCenter.add(panelSpace);
+        add(panelCenter, BorderLayout.CENTER);
+        panelSouth.add(buttLuu);
+        add(panelSouth, BorderLayout.SOUTH);
+        panelSouth.add(buttThoat);
+        add(panelSouth, BorderLayout.SOUTH);
+        buttLuu.addActionListener(this);
+        buttThoat.addActionListener(this);
+        setFont(new Font("Arial", Font.PLAIN, 14));
+        setLocation(180, 50);
+        setSize(500, 250);
+        setResizable(false);
+        setVisible(true);
         //
         connection = new DatabaseConnection();
         connection.connect();
@@ -66,32 +88,12 @@ public class GoiMon extends Frame implements ActionListener{
         }catch(Exception e){
             e.printStackTrace();
         }
-
-        panelSub.add(chTenBan);
-        panelSub.add(lbDoUong);
-        panelSub.add(chTenDoUong);
-        panelSub.add(lbSoLuong);
-        panelSub.add(txtSoLuong);
-        panelCenter.add(panelSub);
-        panelSpace.add(lbSpace);
-        panelCenter.add(panelSpace);
-        add(panelCenter, BorderLayout.CENTER);
-        panelSouth.add(buttLuu);
-        add(panelSouth, BorderLayout.SOUTH);
-        panelSouth.add(buttThoat);
-        add(panelSouth, BorderLayout.SOUTH);
-        buttLuu.addActionListener(this);
-        buttThoat.addActionListener(this);
-        setFont(new Font("Arial", Font.PLAIN, 14));
-        setLocation(180, 50);
-        setSize(700, 250);
-        setResizable(false);
-        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e){
-        if(e.getSource() == buttLuu)
+        if(e.getSource() == buttLuu){
             Luu();
+        }
         if(e.getSource() == buttThoat){
             setVisible(false);
         }

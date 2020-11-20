@@ -73,7 +73,7 @@ public class MenuChinh{
                 FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("Login.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("LOGIN");
-                stage.setScene(new Scene(loader.load(), 533, 344));
+                stage.setScene(new Scene(loader.load(), 334, 192));
                 stage.setResizable(false);
                 Login controller = loader.getController();
                 controller.setOnClose();
@@ -139,7 +139,9 @@ public class MenuChinh{
         menuHelp.add(about);
         // gan cac Menu vao MenuBar
         menu.add(menuFile);
-        menu.add(menuUpdate);
+        if(priority == 1){
+            menu.add(menuUpdate);
+        }
         MenuItem thayDoi = new MenuItem("Huỷ món");
         thayDoi.addActionListener(ae -> new HuyMon("Huỷ món"));
         MenuItem ghepBan = new MenuItem("Ghép bàn");
