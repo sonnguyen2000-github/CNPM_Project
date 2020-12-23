@@ -112,7 +112,7 @@ public class ManageUser implements Initializable{
     }
 
     public void edit(String userId) throws IOException, SQLException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("EditUser.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/EditUser.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Chỉnh sửa thông tin");
         stage.setScene(new Scene(loader.load(), 320, 213));

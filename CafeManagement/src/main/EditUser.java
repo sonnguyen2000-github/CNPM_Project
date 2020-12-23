@@ -83,7 +83,7 @@ public class EditUser implements Initializable{
             return;
         }
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChangePassword.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/ChangePassword.fxml"));
             Stage stage = new Stage();
             stage.setTitle("ĐỔI MẬT KHẨU");
             stage.setScene(new Scene(loader.load(), 190, 150));
