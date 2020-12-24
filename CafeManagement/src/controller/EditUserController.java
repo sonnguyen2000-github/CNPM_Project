@@ -1,5 +1,6 @@
-package main;
+package controller;
 
+import database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,7 +20,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class EditUser implements Initializable{
+public class EditUserController implements Initializable{
     private String userId;
     private DatabaseConnection connection;
     private Statement stmt;
@@ -83,12 +84,12 @@ public class EditUser implements Initializable{
             return;
         }
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/ChangePassword.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/ChangePassword.fxml"));
             Stage stage = new Stage();
             stage.setTitle("ĐỔI MẬT KHẨU");
             stage.setScene(new Scene(loader.load(), 190, 150));
             stage.setResizable(false);
-            ChangePassword controller = loader.getController();
+            ChangePasswordController controller = loader.getController();
             controller.setUser(userId);
             stage.show();
         }catch(Exception e){

@@ -1,5 +1,6 @@
-package main;
+package controller;
 
+import database.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -70,12 +71,12 @@ public class MenuChinh{
         MenuItem thoat = new MenuItem("Thoát");
         thoat.addActionListener(ae -> Platform.runLater(() -> {
             try{
-                FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../fxml/Login.fxml"));
+                FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../view/Login.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("LOGIN");
                 stage.setScene(new Scene(loader.load(), 334, 192));
                 stage.setResizable(false);
-                Login controller = loader.getController();
+                LoginController controller = loader.getController();
                 controller.setOnClose();
                 stage.show();
             }catch(Exception e1){
@@ -95,12 +96,12 @@ public class MenuChinh{
         MenuItem userInfo = new MenuItem("Thông tin");
         userInfo.addActionListener(ae -> Platform.runLater(() -> {
             try{
-                FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../fxml/EditUser.fxml"));
+                FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../view/EditUser.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("Chỉnh sửa thông tin");
                 stage.setScene(new Scene(loader.load(), 320, 213));
                 stage.setResizable(false);
-                EditUser controller = loader.getController();
+                EditUserController controller = loader.getController();
                 controller.setUserId(username);
                 stage.show();
                 //
@@ -112,14 +113,14 @@ public class MenuChinh{
             MenuItem userManage = new MenuItem("Quản lý");
             userManage.addActionListener(ae -> Platform.runLater(() -> {
                 try{
-                    FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../fxml/ManageUser.fxml"));
+                    FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../view/ManageUser.fxml"));
                     Stage stage = new Stage();
                     stage.setTitle("Quản lý người dùng");
                     stage.setScene(new Scene(loader.load(), 167, 242));
                     stage.setResizable(false);
                     //
                     boolean admin = (priority == 1);
-                    ManageUser controller = loader.getController();
+                    ManageUserController controller = loader.getController();
                     controller.setAdmin(admin);
                     //
                     stage.show();

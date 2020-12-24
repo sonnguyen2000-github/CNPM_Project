@@ -1,5 +1,6 @@
-package main;
+package controller;
 
+import database.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +23,7 @@ import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ManageUser implements Initializable{
+public class ManageUserController implements Initializable{
     private DatabaseConnection connection;
     private Statement stmt;
 
@@ -112,12 +113,12 @@ public class ManageUser implements Initializable{
     }
 
     public void edit(String userId) throws IOException, SQLException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/EditUser.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/EditUser.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Chỉnh sửa thông tin");
         stage.setScene(new Scene(loader.load(), 320, 213));
         stage.setResizable(false);
-        EditUser controller = loader.getController();
+        EditUserController controller = loader.getController();
         controller.setUserId(userId);
         stage.show();
 

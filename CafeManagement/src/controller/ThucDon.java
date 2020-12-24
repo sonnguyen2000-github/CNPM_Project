@@ -1,4 +1,6 @@
-package main;
+package controller;
+
+import database.DatabaseConnection;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-class ThemBan extends Frame implements ActionListener{
+class ThucDon extends Frame implements ActionListener{
     /**
      *
      */
@@ -16,54 +18,54 @@ class ThemBan extends Frame implements ActionListener{
     Panel panel3 = new Panel();
     Panel panel4 = new Panel();
     Panel panel5 = new Panel();
-    Label lbThemBan = new Label("DANH SÁCH BÀN", Label.CENTER);
-    Label lbMaBan = new Label("Mã bàn:     ");
-    Label lbTenBan = new Label("Tên bàn:   ");
-    Label lbGhiChu = new Label("Ghi chú:   ");
+    Label lbThucDon = new Label("THỰC ĐƠN", Label.CENTER);
+    Label lbMaDoUong = new Label("Mã đồ uống:   ");
+    Label lbTenDoUong = new Label("Tên đồ uống: ");
+    Label lbDonGia = new Label("Đơn giá(x1000 VND):        ");
     Label lbSpace = new Label("   ");
-    TextField txtMaBan = new TextField(5);
-    TextField txtTenBan = new TextField(20);
-    TextField txtGhiChu = new TextField(20);
-    Button buttThem = new Button(" Thêm ");
-    Button buttSua = new Button(" Sửa ");
-    Button buttMoi = new Button(" Mới ");
+    TextField txtMaDoUong = new TextField(10);
+    TextField txtTenDoUong = new TextField(20);
+    TextField txtDonGia = new TextField(20);
+    Button buttMoi = new Button("  Mới  ");
+    Button buttThem = new Button("  Thêm  ");
+    Button buttSua = new Button("  Sửa  ");
+    Button buttXoa = new Button("  Xoá  ");
+    Button buttThoat = new Button("Quay lại");
     Button buttNext = new Button("Tiếp>");
     Button buttPrev = new Button("<Trước");
     Button buttFirst = new Button("<<Đầu");
     Button butttLast = new Button("Cuối>>");
-    Button buttXoa = new Button("Xoá");
-    Button buttThoat = new Button(" Quay lại ");
     DatabaseConnection connection;
     Statement stmt;
     ResultSet rs;
 
-    public ThemBan(String title){
+    public ThucDon(String title){
         super(title);
-        lbThemBan.setFont(new Font("Tahoma", Font.BOLD, 20));
-        add(lbThemBan, BorderLayout.NORTH);
-        lbMaBan.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        panel2.add(lbMaBan);
-        txtMaBan.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        txtMaBan.setEditable(false);
-        panel2.add(txtMaBan);
-        lbTenBan.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        panel2.add(lbTenBan);
-        txtTenBan.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        panel2.add(txtTenBan);
-        lbGhiChu.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        panel2.add(lbGhiChu);
-        txtGhiChu.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        panel2.add(txtGhiChu);
+        lbThucDon.setFont(new Font("Tahoma", Font.BOLD, 20));
+        add(lbThucDon, BorderLayout.NORTH);
+        lbMaDoUong.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        txtMaDoUong.setEditable(false);
+        panel2.add(lbMaDoUong);
+        txtMaDoUong.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel2.add(txtMaDoUong);
+        lbTenDoUong.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel2.add(lbTenDoUong);
+        txtTenDoUong.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel2.add(txtTenDoUong);
+        lbDonGia.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel2.add(lbDonGia);
+        txtDonGia.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel2.add(txtDonGia);
         panel5.add(panel2);
         panel4.add(lbSpace);
         panel5.add(panel4);
         add(panel5, BorderLayout.CENTER);
         buttThem.setFont(new Font("Arial", Font.PLAIN, 16));
+        panel3.add(buttMoi);
+        buttMoi.setFont(new Font("Arial", Font.PLAIN, 16));
         panel3.add(buttThem);
         buttSua.setFont(new Font("Arial", Font.PLAIN, 16));
         panel3.add(buttSua);
-        buttMoi.setFont(new Font("Arial", Font.PLAIN, 16));
-        panel3.add(buttMoi);
         buttFirst.setFont(new Font("Arial", Font.PLAIN, 16));
         panel3.add(buttFirst);
         buttPrev.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -76,33 +78,39 @@ class ThemBan extends Frame implements ActionListener{
         panel3.add(buttXoa);
         buttThoat.setFont(new Font("Arial", Font.PLAIN, 16));
         panel3.add(buttThoat);
-        add(panel3, BorderLayout.SOUTH);
+
+        buttMoi.addActionListener(this);
         buttThem.addActionListener(this);
         buttSua.addActionListener(this);
-        buttMoi.addActionListener(this);
+        buttThoat.addActionListener(this);
         buttFirst.addActionListener(this);
         buttPrev.addActionListener(this);
         buttNext.addActionListener(this);
         butttLast.addActionListener(this);
         buttXoa.addActionListener(this);
-        buttThoat.addActionListener(this);
         //
         connection = new DatabaseConnection();
         connection.connect();
         stmt = connection.getStmt();
+        //
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Thucdon\";");
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }
+        add(panel3, BorderLayout.SOUTH);
         setLocation(200, 50);
         pack();
         setResizable(false);
         setVisible(true);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e){
         Object source = e.getSource();
+        if(source == buttMoi){
+            Moi();
+        }
         if(source == buttThem){
             Them();
         }
@@ -112,9 +120,6 @@ class ThemBan extends Frame implements ActionListener{
             }catch(SQLException throwables){
                 throwables.printStackTrace();
             }
-        }
-        if(source == buttMoi){
-            Moi();
         }
         if(source == buttFirst){
             First();
@@ -129,75 +134,70 @@ class ThemBan extends Frame implements ActionListener{
             Last();
         }
         if(source == buttXoa){
-            try{
-                Delete();
-            }catch(SQLException throwables){
-                throwables.printStackTrace();
-            }
+            Delete();
         }
         if(source == buttThoat){
-            setVisible(false);
             try{
                 connection.close();
             }catch(SQLException throwables){
                 throwables.printStackTrace();
             }
+            setVisible(false);
         }
+
     }
 
     public void Them(){
         try{
             rs.moveToInsertRow();
-            rs.updateString(1, txtMaBan.getText());
-            rs.updateString(2, txtTenBan.getText());
-            rs.updateString(3, txtGhiChu.getText());
+            rs.updateString(1, txtMaDoUong.getText());
+            rs.updateString(2, txtTenDoUong.getText());
+            rs.updateInt(3, Integer.parseInt(txtDonGia.getText()));
             rs.insertRow();
-            //
-            txtMaBan.setEditable(false);
+            txtMaDoUong.setEditable(false);
         }catch(Exception e){
             System.err.println("Error: " + e.toString());
-            e.printStackTrace();
         }
     }
 
+    // p thuc sua, chi cho phep sua 2 truong TenDoUong, va truong DonGia
+    // khong duoc thay doi truong DoUongID nham tranh sai sot khi cap nhat DL
     public void Sua() throws SQLException{
-        rs.updateString(2,txtTenBan.getText());
-        rs.updateString(3,txtGhiChu.getText());
+        rs.updateString(2, txtTenDoUong.getText());
+        rs.updateInt(3, Integer.parseInt(txtDonGia.getText()));
         rs.updateRow();
+
     }
 
     public void Moi(){
-        txtMaBan.setText("");
-        txtTenBan.setText("");
-        txtGhiChu.setText("");
-        //
-        txtMaBan.setEditable(true);
+        txtMaDoUong.setEditable(true);
+        txtMaDoUong.setText("");
+        txtTenDoUong.setText("");
+        txtDonGia.setText("");
     }
 
     public void First(){
         try{
             rs.first();
-            txtMaBan.setText(rs.getString(1));
-            txtTenBan.setText(rs.getString(2));
-            txtGhiChu.setText(rs.getString(3));
+            txtMaDoUong.setText(rs.getString(1));
+            txtTenDoUong.setText(rs.getString(2));
+            txtDonGia.setText(Integer.toString(rs.getInt(3)));
         }catch(Exception e){
             System.err.println("Error: " + e.toString());
-            e.printStackTrace();
         }
     }
 
     public void Pre(){
         try{
             if(!rs.previous()){
-
                 rs.next();
+                return;
             }
-            txtMaBan.setText(rs.getString(1));
-            txtTenBan.setText(rs.getString(2));
-            txtGhiChu.setText(rs.getString(3));
+            txtMaDoUong.setText(rs.getString(1));
+            txtTenDoUong.setText(rs.getString(2));
+            txtDonGia.setText(Integer.toString(rs.getInt(3)));
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -207,31 +207,36 @@ class ThemBan extends Frame implements ActionListener{
                 rs.previous();
                 return;
             }
-            txtMaBan.setText(rs.getString(1));
-            txtTenBan.setText(rs.getString(2));
-            txtGhiChu.setText(rs.getString(3));
+            txtMaDoUong.setText(rs.getString(1));
+            txtTenDoUong.setText(rs.getString(2));
+            txtDonGia.setText(Integer.toString(rs.getInt(3)));
         }catch(Exception e){
             System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
     public void Last(){
         try{
             rs.last();
-            txtMaBan.setText(rs.getString(1));
-            txtTenBan.setText(rs.getString(2));
-            txtGhiChu.setText(rs.getString(3));
+            txtMaDoUong.setText(rs.getString(1));
+            txtTenDoUong.setText(rs.getString(2));
+            txtDonGia.setText(Integer.toString(rs.getInt(3)));
         }catch(Exception e){
             System.err.println("Error: " + e.toString());
-            e.printStackTrace();
         }
     }
 
-    public void Delete() throws SQLException{
-        rs.deleteRow();
-        txtMaBan.setText("");
-        txtTenBan.setText("");
-        txtGhiChu.setText("");
+    public void Delete(){
+        try{
+            if(rs == null){
+                return;
+            }
+            rs.deleteRow();
+            txtMaDoUong.setText("");
+            txtTenDoUong.setText("");
+            txtDonGia.setText("");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

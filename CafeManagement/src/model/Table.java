@@ -1,16 +1,15 @@
-package object;
+package model;
 
-public class Drink{
-    private String id, name;
-    private int price;
+public class Table{
+    private String id, name, note;
 
-    public Drink(){
+    public Table(){
     }
 
-    public Drink(String id, String name, int price){
+    public Table(String id, String name, String note){
         this.id = id;
         this.name = name;
-        this.price = price;
+        this.note = note;
     }
 
     public String getId(){
@@ -29,11 +28,11 @@ public class Drink{
         this.name = name;
     }
 
-    public int getPrice(){
-        return price;
+    public String getNote(){
+        return note;
     }
 
-    public void setPrice(int price){
-        this.price = price;
+    public void setNote(String note){
+        this.note = note;
     }
 }

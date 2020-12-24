@@ -1,4 +1,6 @@
-package main;
+package controller;
+
+import database.DatabaseConnection;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

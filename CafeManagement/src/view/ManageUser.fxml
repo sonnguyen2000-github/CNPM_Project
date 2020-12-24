@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="260.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ManageUser">
+<BorderPane prefHeight="260.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageUserController">
     <left>
         <FlowPane alignment="CENTER_RIGHT" orientation="VERTICAL" prefHeight="260.0" prefWidth="69.0" BorderPane.alignment="CENTER">
             <children>

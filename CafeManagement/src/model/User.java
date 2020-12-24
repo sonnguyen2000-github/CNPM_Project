@@ -1,4 +1,4 @@
-package object;
+package model;
 
 import java.util.Date;
 
@@ -8,6 +8,12 @@ public class User{
     private Date birthday;
 
     public User(){}
+
+    public User(String username, String password, int priority){
+        this.username = username;
+        this.password = password;
+        this.priority = priority;
+    }
 
     public User(String username, String password, String fullname, String address, String phone, int priority,
                 Date birthday){

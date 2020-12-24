@@ -1,5 +1,6 @@
-package main;
+package controller;
 
+import database.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
 
 import java.net.URL;
 import java.sql.Date;
@@ -18,9 +20,7 @@ import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class Login implements Initializable{
-    private DatabaseConnection connection;
-    private Statement stmt;
+public class LoginController implements Initializable{
     //
     @FXML
     Button loginBtn, signupBtn;
@@ -28,6 +28,8 @@ public class Login implements Initializable{
     TextField username;
     @FXML
     PasswordField password;
+    private DatabaseConnection connection;
+    private Statement stmt;
 
     @FXML
     public void loginByClick(MouseEvent event){
@@ -43,6 +45,47 @@ public class Login implements Initializable{
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }
+    }
+
+    public void error(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("Có lỗi hệ thống khi đăng nhập.");
+        alert.setContentText(
+                "Hãy kiểm tra lại tài khoản và mật khẩu của bạn.\nNếu chưa có tài khoản vui lòng chọn chức năng Đăng ký.");
+        alert.showAndWait();
+    }
+
+    public void login() throws SQLException{
+        String userName = username.getText();
+        String passWord = password.getText();
+        //
+        ResultSet rs = stmt.executeQuery(
+                "SELECT username, password, priority\n" + "FROM public.\"Nguoidung\"\n" + "WHERE username = '" +
+                userName + "' and password = '" + passWord + "';");
+        if(rs.next()){
+            int priority = rs.getInt(3);
+            User user = new User(userName, passWord, priority);
+            start(user);
+            close();
+        }else{
+            error();
+        }
+    }
+
+    public void start(User user){
+        String userName = user.getUsername();
+        int priority = user.getPriority();
+        MenuChinh.createMenu(userName, priority);
+        Platform.setImplicitExit(false);
+    }
+
+    public void close() throws SQLException{
+        connection.close();
+        //
+        Stage stage = (Stage) loginBtn.getScene().getWindow();
+        stage.close();
+        //
     }
 
     @FXML
@@ -94,7 +137,8 @@ public class Login implements Initializable{
             //
             try{
                 ResultSet rs = stmt.executeQuery(
-                        "SELECT username, password, priority, fullname, dob, address, phone\n" + "FROM public.\"Nguoidung\";");
+                        "SELECT username, password, priority, fullname, dob, address, phone\n" +
+                        "FROM public.\"Nguoidung\";");
                 rs.moveToInsertRow();
                 rs.updateString(1, userName_);
                 rs.updateString(2, password_);
@@ -109,43 +153,6 @@ public class Login implements Initializable{
                 e.printStackTrace();
             }
         }
-    }
-
-    public void login() throws SQLException{
-        String userName = username.getText();
-        String passWord = password.getText();
-        //
-        ResultSet rs = stmt.executeQuery(
-                "SELECT username, password, priority\n" + "FROM public.\"Nguoidung\"\n" + "WHERE username = '" + userName + "' and password = '" + passWord + "';");
-        if(rs.next()){
-            int priority = rs.getInt(3);
-            start(userName, priority);
-            close();
-        }else{
-            error();
-        }
-    }
-
-    public void close() throws SQLException{
-        connection.close();
-        //
-        Stage stage = (Stage) loginBtn.getScene().getWindow();
-        stage.close();
-        //
-    }
-
-    public void start(String userName, int priority){
-        MenuChinh.createMenu(userName, priority);
-        Platform.setImplicitExit(false);
-    }
-
-    public void error(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText("Có lỗi hệ thống khi đăng nhập.");
-        alert.setContentText(
-                "Hãy kiểm tra lại tài khoản và mật khẩu của bạn.\nNếu chưa có tài khoản vui lòng chọn chức năng Đăng ký.");
-        alert.showAndWait();
     }
 
     public void setOnClose(){

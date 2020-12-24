@@ -1,5 +1,6 @@
-package main;
+package controller;
 
+import database.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class ChangePassword implements Initializable{
+public class ChangePasswordController implements Initializable{
     private DatabaseConnection connection;
     private Statement stmt;
     private String username;
