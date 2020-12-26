@@ -47,7 +47,7 @@ public class TrangThai extends Frame implements ActionListener{
         setResizable(false);
         setVisible(true);
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban;");
             while(rs.next()){
                 chMaBan.addItem(rs.getString(1));
                 chTenBan.addItem(rs.getString(2));
@@ -69,7 +69,7 @@ public class TrangThai extends Frame implements ActionListener{
     public void Xem(){
         txaChinh.setText("");
         try{
-            rs = stmt.executeQuery("SELECT distinct maban FROM public.\"Goimon\" order by maban;");
+            rs = stmt.executeQuery("SELECT distinct maban FROM public.\"Order\" order by maban;");
             for(int i = 0; i < n; i++){
                 String s = chMaBan.getItem(i);
                 boolean flag = false;

@@ -68,7 +68,7 @@ public class GoiMon extends Frame implements ActionListener{
         connection.connect();
         stmt = connection.getStmt();
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban");
             rs.next();
             while(!rs.isAfterLast()){
                 chBan.addItem(rs.getString(1));
@@ -80,7 +80,7 @@ public class GoiMon extends Frame implements ActionListener{
         }
         //
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Thucdon\"");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Drink\"");
             rs.next();
             while(!rs.isAfterLast()){
                 chDoUong.addItem(rs.getString(1));
@@ -103,7 +103,7 @@ public class GoiMon extends Frame implements ActionListener{
 
     public void Luu(){
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Goimon\"");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Order\"");
             rs.moveToInsertRow();
             rs.updateString(1, txtMaGoi.getText());
             int n = chTenBan.getSelectedIndex();

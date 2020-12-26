@@ -1,11 +1,12 @@
 package model;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class User{
     private String username, password, fullname, address, phone;
     private int priority;
-    private Date birthday;
+    private Date dob;
 
     public User(){}
 
@@ -16,14 +17,19 @@ public class User{
     }
 
     public User(String username, String password, String fullname, String address, String phone, int priority,
-                Date birthday){
+                Date dob){
         this.username = username;
         this.password = password;
         this.fullname = fullname;
         this.address = address;
         this.phone = phone;
         this.priority = priority;
-        this.birthday = birthday;
+        this.dob = dob;
+    }
+
+    @Override
+    public String toString(){
+        return getUsername();
     }
 
     public String getUsername(){
@@ -74,11 +80,11 @@ public class User{
         this.priority = priority;
     }
 
-    public Date getBirthday(){
-        return birthday;
+    public Date getDob(){
+        return dob;
     }
 
-    public void setBirthday(Date birthday){
-        this.birthday = birthday;
+    public void setDob(Date dob){
+        this.dob = dob;
     }
 }

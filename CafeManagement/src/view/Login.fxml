@@ -46,7 +46,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                     </padding>
                 </TextField>
                 <PasswordField fx:id="password" maxWidth="-Infinity" minWidth="-Infinity" onKeyReleased="#loginByKey" prefHeight="27.2" prefWidth="144.8" style="-fx-background-radius: 10;">
@@ -54,7 +54,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </FlowPane.margin>
                     <padding>
-                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                        <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                     </padding>
                 </PasswordField>
             </children>

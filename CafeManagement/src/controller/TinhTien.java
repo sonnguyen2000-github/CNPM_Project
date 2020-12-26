@@ -1,6 +1,7 @@
 package controller;
 
 import database.DatabaseConnection;
+import javafx.scene.control.Alert;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -24,7 +26,7 @@ class TinhTien extends Frame implements ActionListener{
     GridBagLayout gb = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
     TextArea taChinh = new TextArea();
-    TextField userName = new TextField("Khách hàng");
+    TextField userName = new TextField("Username Khách hàng");
     Label lbTinhTien = new Label("TÍNH TIỀN");
     Label lbNhap = new Label("Nhập mã bàn:                 ");
     Label lbTong = new Label("Tổng số tiền:                ");
@@ -47,7 +49,7 @@ class TinhTien extends Frame implements ActionListener{
         connection.connect();
         stmt = connection.getStmt();
         try{
-            rs = stmt.executeQuery("SELECT maban\n" + "\tFROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT maban\n" + "\tFROM public.\"Table\" order by maban;");
             rs.next();
             while(!rs.isAfterLast()){
                 chNhap.addItem(rs.getString(1));
@@ -71,10 +73,12 @@ class TinhTien extends Frame implements ActionListener{
         addComponent(buttTraBan, 10, 2, 1, 1);
         addComponent(buttThoat, 10, 3, 1, 1);
         addComponent(buttIn, 10, 4, 1, 1);
+
         buttTinh.addActionListener(this);
         buttTraBan.addActionListener(this);
         buttThoat.addActionListener(this);
         buttIn.addActionListener(this);
+
         setFont(new Font("Arial", Font.PLAIN, 14));
         setLocation(200, 50);
         pack();
@@ -99,7 +103,7 @@ class TinhTien extends Frame implements ActionListener{
                 setVisible(false);
             }else{
                 if(ae.getSource() == buttTraBan){
-                    xoa();
+                    traban();
                 }else{
                     if(ae.getSource() == buttIn){
                         try{
@@ -118,8 +122,11 @@ class TinhTien extends Frame implements ActionListener{
         sum = 0;
 
         try{
-            rs = stmt.executeQuery(
-                    "SELECT Goimon.maban, Thucdon.gia, Goimon.soluong, Thucdon.gia*Goimon.soluong as tong,Thucdon.ten as menu FROM public.\"Thucdon\" as thucdon INNER JOIN (public.\"Ban\" as ban INNER JOIN public.\"Goimon\" as goimon ON ban.maban = goimon.maban) ON thucdon.madouong = Goimon.madouong order by ban.maban");
+            rs = stmt.executeQuery("SELECT public.\"Order\".maban, public.\"Drink\".gia, public.\"Order\".soluong," +
+                                   " public.\"Drink\".gia*public.\"Order\".soluong as tong, public.\"Drink\".ten as menu " +
+                                   "FROM public.\"Drink\" INNER JOIN (public.\"Table\" INNER JOIN public.\"Order\" " +
+                                   "ON public.\"Table\".maban = public.\"Order\".maban) ON public.\"Drink\".madouong = public.\"Order\".madouong " +
+                                   "order by public.\"Table\".maban;");
             taChinh.setText("        Tên đồ uống\t\t  Đơn giá\t\t    Số lượng\t\t Giá\n\n");
             while(rs.next()){
                 if(rs.getString(1).equals(s)){
@@ -136,33 +143,39 @@ class TinhTien extends Frame implements ActionListener{
             System.err.println("Error:" + e.getMessage());
             e.printStackTrace();
         }
-        // xoa tat ca cac ban ghi do trong Goimon
+        // xoa tat ca cac ban ghi do trong Order
     }
 
-    public void xoa(){
+    public void traban(){
         String s = chNhap.getItem(chNhap.getSelectedIndex());
         try{
-            rs = stmt.executeQuery("SELECT distinct maban,magoi \n" + "\tFROM public.\"Goimon\";");
+            rs = stmt.executeQuery("SELECT distinct maban, magoi \n" + "\tFROM public.\"Order\";");
             while(rs.next()){
                 if(rs.getString(1).equals(s)){
                     rs.deleteRow();
                 }
             }
-            //
-            String username = userName.getText();
-            Random rand = new Random();
-            StringBuilder key = new StringBuilder();
-            for(int i = 0; i < 3; i++){
-                key.append(rand.nextInt(i + 8));
+
+            try{
+                String username = userName.getText();
+                Random rand = new Random();
+                StringBuilder key = new StringBuilder();
+                for(int i = 0; i < 3; i++){
+                    key.append(rand.nextInt(i + 8));
+                }
+                Calendar today = Calendar.getInstance();
+                String code = username + key + today.get(Calendar.DAY_OF_MONTH) + today.get(Calendar.MONTH);
+                stmt.executeUpdate(
+                        "INSERT INTO public.\"History\"(\n" + "\tusername, id_order, date)\n" + "\tVALUES ('" +
+                        username + "', '" + code + "', '" + today.getTime() + "');");
+            }catch(Exception e){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Người dùng không tồn tại.");
+                alert.show();
             }
-            Calendar today = Calendar.getInstance();
-            String code = username + key + today.get(Calendar.DAY_OF_MONTH) + today.get(Calendar.MONTH);
-            stmt.executeUpdate(
-                    "INSERT INTO public.\"Lichsu\"(\n" + "\tusername, id_order, date)\n" + "\tVALUES ('" + username + "', '" + code + "', '" + today.getTime() + "');");
 
             lbKqua.setText("");
             taChinh.setText("");
-            //
         }catch(SQLException se){
             se.printStackTrace();
             System.err.println("Error: " + se.getMessage());
@@ -171,14 +184,13 @@ class TinhTien extends Frame implements ActionListener{
 
     public void in() throws IOException{
         FileDialog saver = new FileDialog(this, "HOÁ ĐƠN", FileDialog.SAVE);
-        File hoadon = new File(
-                "E:\\OneDrive - Hanoi University of Science and Technology\\20201\\CNPM\\BTL\\hoadon.txt");
+        File hoadon = new File("E:\\OneDrive - Hanoi University of Science and Technology\\Documents\\Eclipse Projects\\CafeManagement\\CafeManagement\\data\\bill_" + LocalDate.now() + ".txt");
         FileWriter writer = new FileWriter(hoadon);
-        //
+
         String username = userName.getText();
-        //
-        writer.write(
-                "Khách hàng: " + username + "\nMã order: " + code + "\n" + taChinh.getText() + "\t\t\t\t\t\t\t\t\t   Tống: " + lbKqua.getText() + "\n\t\t\t\t\t" + new Date().toString());
+
+        writer.write("Khách hàng: " + username + "\nMã order: " + code + "\n" + taChinh.getText() +
+                     "\t\t\t\t\t\t\t\t\t   Tống: " + lbKqua.getText() + "\n\t\t\t\t\t" + new Date().toString());
         writer.close();
         saver.setFile(hoadon.getAbsolutePath());
         saver.setDirectory(hoadon.getPath());

@@ -94,7 +94,7 @@ class ThucDon extends Frame implements ActionListener{
         stmt = connection.getStmt();
         //
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Thucdon\";");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Drink\";");
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }

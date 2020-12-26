@@ -93,7 +93,7 @@ class ThemBan extends Frame implements ActionListener{
         connection.connect();
         stmt = connection.getStmt();
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban;");
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }

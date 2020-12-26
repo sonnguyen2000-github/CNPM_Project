@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -17,14 +18,13 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class ChangePasswordController implements Initializable{
-    private DatabaseConnection connection;
-    private Statement stmt;
-    private String username;
-
     @FXML
     PasswordField oldPassword, newPassword;
     @FXML
     Button saveBtn, cancelBtn;
+    private DatabaseConnection connection;
+    private Statement stmt;
+    private User user;
 
     @FXML
     public void save(MouseEvent event){
@@ -38,7 +38,8 @@ public class ChangePasswordController implements Initializable{
         }
         try{
             ResultSet rs = stmt.executeQuery(
-                    "SELECT username, password\n" + "FROM public.\"Nguoidung\"\n" + "WHERE username = '" + username + "';");
+                    "SELECT username, password\n" + "FROM public.\"User\"\n" + "WHERE username = '" +
+                    user.getUsername() + "';");
             if(rs.next()){
                 String password = rs.getString(2);
                 if(!old_.equals(password)){
@@ -47,6 +48,12 @@ public class ChangePasswordController implements Initializable{
                 rs.updateString(2, new_);
                 rs.updateRow();
 
+                user.setPassword(new_);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("");
+                alert.setHeaderText("Đổi mật khẩu thành công.");
+                alert.show();
+                cancel(event);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -56,18 +63,18 @@ public class ChangePasswordController implements Initializable{
     }
 
     @FXML
-    public void cancel(MouseEvent event) throws SQLException{
+    public void cancel(MouseEvent event){
         if(event.getButton() == MouseButton.SECONDARY){
             return;
         }
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
         //
-        connection.close();
-    }
-
-    public void setUser(String username){
-        this.username = username;
+        try{
+            connection.close();
+        }catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
     }
 
     public void error(){
@@ -76,6 +83,10 @@ public class ChangePasswordController implements Initializable{
         alert.setHeaderText("");
         alert.setContentText("Mật khẩu không đúng. Vui lòng thử lại.");
         alert.showAndWait();
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     @Override

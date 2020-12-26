@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
 
 import java.net.URL;
 import java.sql.Date;
@@ -21,16 +22,15 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class EditUserController implements Initializable{
-    private String userId;
-    private DatabaseConnection connection;
-    private Statement stmt;
-
     @FXML
     TextField fullName, address, phone;
     @FXML
     DatePicker dob;
     @FXML
     Button deleteBtn, saveBtn, cancelBtn, passwordBtn;
+    private DatabaseConnection connection;
+    private Statement stmt;
+    private User user;
 
     @FXML
     public void delete(MouseEvent event){
@@ -40,7 +40,6 @@ public class EditUserController implements Initializable{
         fullName.setText("");
         address.setText("");
         phone.setText("");
-        //
     }
 
     @FXML
@@ -55,24 +54,22 @@ public class EditUserController implements Initializable{
 
         try{
             ResultSet rs = stmt.executeQuery(
-                    "SELECT username, fullname, dob, address, phone\n" + "FROM public.\"Nguoidung\"\n" + "WHERE username = '" + userId + "';");
-            boolean existed = rs.next();
-            if(!existed){
-                rs.moveToInsertRow();
-                rs.updateString(1, userId);
-            }
-            rs.updateString(2, fullname);
-            rs.updateDate(3, Date.valueOf(dob_));
-            rs.updateString(4, address_);
-            if(!phone_.isEmpty()){
-                rs.updateInt(5, Integer.parseInt(phone_));
-            }
-            if(!existed){
-                rs.insertRow();
-            }else{
+                    "SELECT username, fullname, dob, address, phone\n" + "FROM public.\"User\"\n" +
+                    "WHERE username = '" + user.getUsername() + "';");
+            if(rs.next()){
+                rs.updateString(2, fullname);
+                rs.updateDate(3, Date.valueOf(dob_));
+                rs.updateString(4, address_);
+                if(!phone_.isEmpty()){
+                    rs.updateInt(5, Integer.parseInt(phone_));
+                }
                 rs.updateRow();
-            }
 
+                user.setFullname(fullname);
+                user.setPhone(phone_);
+                user.setDob(Date.valueOf(dob_));
+                user.setAddress(address_);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -87,10 +84,10 @@ public class EditUserController implements Initializable{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/ChangePassword.fxml"));
             Stage stage = new Stage();
             stage.setTitle("ĐỔI MẬT KHẨU");
-            stage.setScene(new Scene(loader.load(), 190, 150));
+            stage.setScene(new Scene(loader.load()));
             stage.setResizable(false);
             ChangePasswordController controller = loader.getController();
-            controller.setUser(userId);
+            controller.setUser(user);
             stage.show();
         }catch(Exception e){
             e.printStackTrace();
@@ -112,18 +109,12 @@ public class EditUserController implements Initializable{
         }
     }
 
-    public void setUserId(String userId) throws SQLException{
-        this.userId = userId;
-        //
-        ResultSet rs = stmt.executeQuery(
-                "SELECT fullname, dob, address, phone\n" + "FROM public.\"Nguoidung\"\n" + "WHERE username = '" + userId + "';");
-        if(rs.next()){
-            fullName.setText(rs.getString(1));
-            dob.setValue(rs.getDate(2).toLocalDate());
-            address.setText(rs.getString(3));
-            phone.setText(rs.getInt(4) + "");
-        }
-        //
+    public void setUser(User user){
+        this.user = user;
+        fullName.setText(user.getFullname());
+        phone.setText(user.getPhone());
+        dob.setValue(user.getDob().toLocalDate());
+        address.setText(user.getAddress());
     }
 
     @Override
@@ -131,7 +122,5 @@ public class EditUserController implements Initializable{
         connection = new DatabaseConnection();
         connection.connect();
         stmt = connection.getStmt();
-        //
-        dob.setValue(LocalDate.parse("1999-01-01"));
     }
 }

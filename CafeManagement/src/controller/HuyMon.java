@@ -27,7 +27,7 @@ public class HuyMon extends Frame implements ActionListener{
     Choice chDoUongID = new Choice();
     Choice chTenDoUong = new Choice();
     TextField txtSoLuong = new TextField(20);
-    Button buttLuu = new Button("   LƯu   ");
+    Button buttLuu = new Button("   Lưu   ");
     Button buttHuy = new Button(" Huỷ bàn ");
     Button buttThoat = new Button(" Quay lại ");
     DatabaseConnection connection;
@@ -43,7 +43,7 @@ public class HuyMon extends Frame implements ActionListener{
         connection.connect();
         stmt = connection.getStmt();
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban;");
             rs.next();
             while(!rs.isAfterLast()){
                 chBanID.addItem(rs.getString(1));
@@ -56,7 +56,7 @@ public class HuyMon extends Frame implements ActionListener{
         panelSub.add(chTenBan);
         panelSub.add(lbTenDouong);
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Thucdon\";");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Drink\";");
             rs.next();
             while(!rs.isAfterLast()){
                 chDoUongID.addItem(rs.getString(1));
@@ -104,7 +104,7 @@ public class HuyMon extends Frame implements ActionListener{
             // rs chua cac ban ghi tren bang Goi_mon
             String Ban = chBanID.getItem(chTenBan.getSelectedIndex());
             String DoUong = chDoUongID.getItem(chTenDoUong.getSelectedIndex());
-            rs = stmt.executeQuery("SELECT * FROM public.\"Goimon\"\n" + "\tWHERE maban ='" + Ban + "'  and madouong ='" + DoUong + "' ;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Order\"\n" + "\tWHERE maban ='" + Ban + "'  and madouong ='" + DoUong + "' ;");
             if(!rs.next())
                 return;
             rs.updateInt(4, (rs.getInt(4) + (Integer.parseInt(txtSoLuong.getText()))));
@@ -120,7 +120,7 @@ public class HuyMon extends Frame implements ActionListener{
         String ban = chBanID.getItem(chTenBan.getSelectedIndex());
         String doUong = chDoUongID.getItem(chTenDoUong.getSelectedIndex());
         try{
-            stmt.executeUpdate("DELETE FROM public.\"Goimon\"\n" + "\tWHERE maban ='" + ban + "'  and madouong ='" + doUong + "' ;");
+            stmt.executeUpdate("DELETE FROM public.\"Order\"\n" + "\tWHERE maban ='" + ban + "'  and madouong ='" + doUong + "' ;");
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }

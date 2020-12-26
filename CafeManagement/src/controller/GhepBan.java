@@ -42,7 +42,7 @@ public class GhepBan extends Frame implements ActionListener{
         connection.connect();
         stmt = connection.getStmt();
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban;");
             rs.next();
             while(!rs.isAfterLast()){
                 chMaBan1.addItem(rs.getString(1));
@@ -53,7 +53,7 @@ public class GhepBan extends Frame implements ActionListener{
             e.printStackTrace();
         }
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban;");
             rs.next();
             while(!rs.isAfterLast()){
                 chMaBan2.addItem(rs.getString(1));
@@ -64,7 +64,7 @@ public class GhepBan extends Frame implements ActionListener{
             e.printStackTrace();
         }
         try{
-            rs = stmt.executeQuery("SELECT * FROM public.\"Ban\" order by maban;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Table\" order by maban;");
             rs.next();
             while(!rs.isAfterLast()){
                 chMaBan3.addItem(rs.getString(1));
@@ -113,7 +113,7 @@ public class GhepBan extends Frame implements ActionListener{
             String Ban1 = chMaBan1.getItem(chBanGhep1.getSelectedIndex());
             String Ban2 = chMaBan2.getItem(chBanGhep2.getSelectedIndex());
             String Ban3 = chMaBan3.getItem(chBanGhep3.getSelectedIndex());
-            rs = stmt.executeQuery("SELECT * FROM public.\"Goimon\" where maban = '" + Ban1 + "' or " + "maban = '" + Ban2 + "' order by maban ;");
+            rs = stmt.executeQuery("SELECT * FROM public.\"Order\" where maban = '" + Ban1 + "' or " + "maban = '" + Ban2 + "' order by maban ;");
             // bien k dung de luu lai so ban ghi cau rs truoc khi co su thay doi
             // bien n dung de khoi tao ma goi cho ban ghi moi khi trong rs co hai
             // ban ghi co DoUongID giong nhau, voi so luong la tong so luong cua

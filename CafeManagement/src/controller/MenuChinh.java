@@ -4,7 +4,9 @@ import database.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +18,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MenuChinh{
-    public static void createMenu(String username, int priority){
+    private static User user;
+
+    public static void createMenu(User user){
         //
+        MenuChinh.user = user;
+        String username = user.getUsername();
+        int priority = user.getPriority();
         String role = "CUSTOMER";
         switch(priority){
             case 1:
@@ -58,7 +65,12 @@ public class MenuChinh{
                 connection.connect();
                 Statement stmt = connection.getStmt();
                 try{
-                    stmt.executeUpdate("DELETE FROM public.\"Goimon\";");
+                    stmt.executeUpdate("DELETE FROM public.\"Order\";");
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setContentText("Đã xoá order trong ngày.");
+                        alert.show();
+                    });
                 }catch(SQLException throwables){
                     throwables.printStackTrace();
                 }
@@ -74,7 +86,7 @@ public class MenuChinh{
                 FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../view/Login.fxml"));
                 Stage stage = new Stage();
                 stage.setTitle("LOGIN");
-                stage.setScene(new Scene(loader.load(), 334, 192));
+                stage.setScene(new Scene(loader.load()));
                 stage.setResizable(false);
                 LoginController controller = loader.getController();
                 controller.setOnClose();
@@ -102,7 +114,7 @@ public class MenuChinh{
                 stage.setScene(new Scene(loader.load(), 320, 213));
                 stage.setResizable(false);
                 EditUserController controller = loader.getController();
-                controller.setUserId(username);
+                controller.setUser(user);
                 stage.show();
                 //
             }catch(Exception e){
@@ -116,7 +128,7 @@ public class MenuChinh{
                     FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("../view/ManageUser.fxml"));
                     Stage stage = new Stage();
                     stage.setTitle("Quản lý người dùng");
-                    stage.setScene(new Scene(loader.load(), 167, 242));
+                    stage.setScene(new Scene(loader.load()));
                     stage.setResizable(false);
                     //
                     boolean admin = (priority == 1);
@@ -144,7 +156,7 @@ public class MenuChinh{
             menu.add(menuUpdate);
         }
         MenuItem thayDoi = new MenuItem("Huỷ món");
-        thayDoi.addActionListener(ae -> new HuyMon("Huỷ món"));
+        thayDoi.addActionListener(ae -> new HuyMon("Thay đổi món"));
         MenuItem ghepBan = new MenuItem("Ghép bàn");
         ghepBan.addActionListener(ae -> new GhepBan("Ghép bàn"));
         menuProcess.add(thayDoi);

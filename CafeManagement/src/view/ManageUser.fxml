@@ -35,7 +35,7 @@
         <FlowPane alignment="CENTER" prefHeight="260.0" prefWidth="143.0" BorderPane.alignment="CENTER">
             <children>
             <Label text="Khách hàng" />
-                <ListView fx:id="userList" onMouseClicked="#listHandler" prefHeight="107.0" prefWidth="167.0">
+                <ListView fx:id="customerList" onMouseClicked="#listHandler" prefHeight="107.0" prefWidth="167.0">
                     <FlowPane.margin>
                         <Insets bottom="5.0" right="2.0" />
                     </FlowPane.margin>
