@@ -1,0 +1,6 @@
+Khách hàng: Username Khách hàng
+Mã order: null
+        Tên đồ uống		  Đơn giá		    Số lượng		 Giá
+
+									   Tống: 0.000 VND
+					Sat Dec 26 16:55:04 ICT 2020
