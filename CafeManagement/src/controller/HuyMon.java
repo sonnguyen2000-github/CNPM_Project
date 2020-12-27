@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class HuyMon extends Frame implements ActionListener{
     /**
@@ -31,7 +32,7 @@ public class HuyMon extends Frame implements ActionListener{
     Button buttHuy = new Button(" Huỷ bàn ");
     Button buttThoat = new Button(" Quay lại ");
     DatabaseConnection connection;
-    java.sql.Statement stmt;
+    Statement stmt;
     ResultSet rs;
 
     public HuyMon(String title){

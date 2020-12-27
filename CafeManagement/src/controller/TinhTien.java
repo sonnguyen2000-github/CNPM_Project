@@ -1,6 +1,7 @@
 package controller;
 
 import database.DatabaseConnection;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 import java.awt.*;
@@ -169,9 +170,11 @@ class TinhTien extends Frame implements ActionListener{
                         "INSERT INTO public.\"History\"(\n" + "\tusername, id_order, date)\n" + "\tVALUES ('" +
                         username + "', '" + code + "', '" + today.getTime() + "');");
             }catch(Exception e){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Người dùng không tồn tại.");
-                alert.show();
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Người dùng không tồn tại.");
+                    alert.show();
+                });
             }
 
             lbKqua.setText("");

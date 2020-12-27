@@ -18,11 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MenuChinh{
-    private static User user;
 
     public static void createMenu(User user){
-        //
-        MenuChinh.user = user;
         String username = user.getUsername();
         int priority = user.getPriority();
         String role = "CUSTOMER";
@@ -52,7 +49,18 @@ public class MenuChinh{
         trangThai.addActionListener(ae -> new TrangThai("Trạng thái bàn"));
         menuFile.add(trangThai);
         MenuItem goiMon = new MenuItem("Gọi món");
-        goiMon.addActionListener(ae -> new GoiMon("Gọi món"));
+        goiMon.addActionListener(ae -> Platform.runLater(() -> {
+            try{
+                FXMLLoader loader = new FXMLLoader(MenuChinh.class.getResource("/view/Order.fxml"));
+                Stage stage = new Stage();
+                stage.setTitle("");
+                stage.setScene(new Scene(loader.load()));
+                stage.setResizable(false);
+                stage.show();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }));
         menuFile.add(goiMon);
         if(priority <= 2){
             MenuItem tinhTien = new MenuItem("Tính tiền");
@@ -184,7 +192,7 @@ public class MenuChinh{
         });
         //Timer
         Thread timerThread = new Thread(() -> {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MM/dd/yyyy HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM dd yyyy HH:mm:ss");
             while(true){
                 timer.setText(dateFormat.format(new Date()));
                 try{
