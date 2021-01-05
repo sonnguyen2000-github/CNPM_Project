@@ -60,9 +60,7 @@ public class EditUserController implements Initializable{
                 rs.updateString(2, fullname);
                 rs.updateDate(3, Date.valueOf(dob_));
                 rs.updateString(4, address_);
-                if(!phone_.isEmpty()){
-                    rs.updateInt(5, Integer.parseInt(phone_));
-                }
+                rs.updateString(5, phone_);
                 rs.updateRow();
 
                 user.setFullname(fullname);

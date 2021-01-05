@@ -67,44 +67,46 @@ public class SignupController implements Initializable{
         if(event.getButton() != MouseButton.PRIMARY){
             return;
         }
-        if(usernameTxt.getText().isEmpty() || passwordTxt.getText().isEmpty()){
+        if(usernameTxt.getText().isEmpty() || passwordTxt.getText().isEmpty() || (!employeeCk.isSelected() && !customerCk.isSelected())){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("");
-            alert.setContentText("USERNAME và PASSWORD không được để trống.");
+            alert.setContentText("USERNAME, PASSWORD và checkbox không được để trống.");
             alert.show();
-        }else if(checkUsername()){
-            try{
-                User user = new User();
-                user.setUsername(usernameTxt.getText());
-                user.setPassword(passwordTxt.getText());
-                user.setPriority(customerCk.isSelected() ? 3 : 2);
-                user.setFullname(fullnameTxt.getText());
-                user.setPhone(phoneTxt.getText());
-                user.setDob(Date.valueOf(dobPkr.getValue()));
-                user.setAddress(addressTxt.getText());
-
-                ResultSet rs = stmt.executeQuery("SELECT username, password,  priority," +
-                                                 " fullname, phone, dob, address FROM public.\"User\"");
-                rs.moveToInsertRow();
-                rs.updateString(1, user.getUsername());
-                rs.updateString(2, user.getPassword());
-                rs.updateInt(3, user.getPriority());
-                rs.updateString(4, user.getFullname());
-                rs.updateInt(5, Integer.parseInt(user.getPhone()));
-                rs.updateDate(6, user.getDob());
-                rs.updateString(7, user.getAddress());
-                rs.insertRow();
-
-                System.out.println("Insert new user successfully");
-                close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
         }else{
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("");
-            alert.setContentText("USERNAME đã tồn tại, vui lòng chọn tên khác.");
-            alert.show();
+            if(checkUsername()){
+                try{
+                    User user = new User();
+                    user.setUsername(usernameTxt.getText());
+                    user.setPassword(passwordTxt.getText());
+                    user.setPriority(customerCk.isSelected() ? 3 : 2);
+                    user.setFullname(fullnameTxt.getText());
+                    user.setPhone(phoneTxt.getText());
+                    user.setDob(Date.valueOf(dobPkr.getValue()));
+                    user.setAddress(addressTxt.getText());
+
+                    ResultSet rs = stmt.executeQuery(
+                            "SELECT username, password,  priority," + " fullname, phone, dob, address FROM public.\"User\"");
+                    rs.moveToInsertRow();
+                    rs.updateString(1, user.getUsername());
+                    rs.updateString(2, user.getPassword());
+                    rs.updateInt(3, user.getPriority());
+                    rs.updateString(4, user.getFullname());
+                    rs.updateString(5, user.getPhone());
+                    rs.updateDate(6, user.getDob());
+                    rs.updateString(7, user.getAddress());
+                    rs.insertRow();
+
+                    System.out.println("Insert new user successfully");
+                    close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }else{
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("");
+                alert.setContentText("USERNAME đã tồn tại, vui lòng chọn tên khác.");
+                alert.show();
+            }
         }
     }
 
@@ -133,8 +135,10 @@ public class SignupController implements Initializable{
         CheckBox checkBox = (CheckBox) event.getSource();
         if(checkBox.equals(customerCk)){
             employeeCk.setSelected(!customerCk.isSelected());
-        }else if(checkBox.equals(employeeCk)){
-            customerCk.setSelected(!employeeCk.isSelected());
+        }else{
+            if(checkBox.equals(employeeCk)){
+                customerCk.setSelected(!employeeCk.isSelected());
+            }
         }
     }
 

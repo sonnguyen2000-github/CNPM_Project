@@ -3,6 +3,8 @@ package controller;
 import database.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import model.User;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +14,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -38,7 +43,7 @@ class TinhTien extends Frame implements ActionListener{
     Button buttIn = new Button("Hoá đơn");
     Label lbKqua = new Label();
     DatabaseConnection connection;
-    java.sql.Statement stmt;
+    Statement stmt;
     ResultSet rs;
 
     public TinhTien(String title){
@@ -85,6 +90,7 @@ class TinhTien extends Frame implements ActionListener{
         pack();
         setVisible(true);
         setResizable(false);
+        /**/
     }
 
     public void addComponent(Component c, int row, int col, int nrow, int ncol){
@@ -187,7 +193,9 @@ class TinhTien extends Frame implements ActionListener{
 
     public void in() throws IOException{
         FileDialog saver = new FileDialog(this, "HOÁ ĐƠN", FileDialog.SAVE);
-        File hoadon = new File("E:\\OneDrive - Hanoi University of Science and Technology\\Documents\\Eclipse Projects\\CafeManagement\\CafeManagement\\data\\bill_" + LocalDate.now() + ".txt");
+        File hoadon = new File(
+                "E:\\OneDrive - Hanoi University of Science and Technology\\Documents\\Eclipse Projects\\CafeManagement\\CafeManagement\\data\\bill_" +
+                LocalDate.now() + ".txt");
         FileWriter writer = new FileWriter(hoadon);
 
         String username = userName.getText();
