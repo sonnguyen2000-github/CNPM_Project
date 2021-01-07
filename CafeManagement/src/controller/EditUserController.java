@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -51,17 +52,24 @@ public class EditUserController implements Initializable{
         LocalDate dob_ = dob.getValue();
         String address_ = address.getText();
         String phone_ = phone.getText();
-
+        if(fullname.isEmpty() || address_.isEmpty() || phone_.isEmpty()){
+            return;
+        }
         try{
             ResultSet rs = stmt.executeQuery(
-                    "SELECT username, fullname, dob, address, phone\n" + "FROM public.\"User\"\n" +
-                    "WHERE username = '" + user.getUsername() + "';");
+                    "SELECT username, fullname, dob, address, phone\n" + "FROM public.\"User\"\n" + "WHERE username = '" + user.getUsername() + "';");
             if(rs.next()){
                 rs.updateString(2, fullname);
                 rs.updateDate(3, Date.valueOf(dob_));
                 rs.updateString(4, address_);
                 rs.updateString(5, phone_);
                 rs.updateRow();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("");
+                alert.setHeaderText("Cập nhật thông tin thành công.");
+                alert.setContentText("");
+                alert.show();
 
                 user.setFullname(fullname);
                 user.setPhone(phone_);

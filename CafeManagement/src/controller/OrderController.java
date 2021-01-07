@@ -98,6 +98,12 @@ public class OrderController implements Initializable{
                 }
                 clearTxt();
                 clearTable();
+
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                alert1.setTitle("");
+                alert1.setHeaderText("Cập nhật order thành công.");
+                alert1.setContentText("");
+                alert1.show();
             }catch(Exception e){
                 e.printStackTrace();
             }
