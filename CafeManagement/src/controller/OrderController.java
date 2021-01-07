@@ -42,6 +42,11 @@ public class OrderController implements Initializable{
             return;
         }
         if(tableTxt.getText().isEmpty() || drinkTxt.getText().isEmpty() || orderIdTxt.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("");
+            alert.setHeaderText("Thông tin chưa đầy đủ");
+            alert.setContentText("");
+            alert.show();
             return;
         }
         try{
