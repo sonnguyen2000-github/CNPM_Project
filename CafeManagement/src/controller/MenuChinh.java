@@ -138,11 +138,11 @@ public class MenuChinh{
                     stage.setTitle("Quản lý người dùng");
                     stage.setScene(new Scene(loader.load()));
                     stage.setResizable(false);
-                    //
+
                     boolean admin = (priority == 1);
                     ManageUserController controller = loader.getController();
                     controller.setAdmin(admin);
-                    //
+
                     stage.show();
                 }catch(Exception e){
                     e.printStackTrace();

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import model.User;
 
@@ -28,6 +29,7 @@ public class ManageUserController implements Initializable{
     ListView<User> customerList, employeeList;
     private DatabaseConnection connection;
     private Statement stmt;
+    private User currentSelectedUser;
 
     @FXML
     public void listHandler(MouseEvent event){
@@ -35,6 +37,7 @@ public class ManageUserController implements Initializable{
             ListView<User> listView = (ListView<User>) event.getSource();
             User user = listView.getSelectionModel().getSelectedItem();
             if(user != null){
+                currentSelectedUser = user;
                 listView.getContextMenu().show(listView, event.getX(), event.getY());
             }
         }
@@ -47,7 +50,7 @@ public class ManageUserController implements Initializable{
         }
         Stage stage = (Stage) quitBtn.getScene().getWindow();
         stage.close();
-        //
+
         try{
             connection.close();
         }catch(SQLException throwables){
@@ -76,8 +79,7 @@ public class ManageUserController implements Initializable{
 
         //
         ResultSet rs = stmt.executeQuery(
-                "SELECT username, password, priority, fullname, phone, dob, address\n" + "FROM public.\"User\"\n" +
-                "WHERE priority = 3;");
+                "SELECT username, password, priority, fullname, phone, dob, address\n" + "FROM public.\"User\"\n" + "WHERE priority = 3;");
         while(rs.next()){
             User user = new User();
             user.setUsername(rs.getString(1));
@@ -91,8 +93,7 @@ public class ManageUserController implements Initializable{
         }
         //
         rs = stmt.executeQuery(
-                "SELECT username, password, priority, fullname, phone, dob, address\n" + "FROM public.\"User\"\n" +
-                "WHERE priority = 2;");
+                "SELECT username, password, priority, fullname, phone, dob, address\n" + "FROM public.\"User\"\n" + "WHERE priority = 2;");
         while(rs.next()){
             User user = new User();
             user.setUsername(rs.getString(1));
@@ -119,8 +120,7 @@ public class ManageUserController implements Initializable{
         ContextMenu contextMenu = new ContextMenu();
         MenuItem editMenuItem = new MenuItem("Chỉnh sửa");
         editMenuItem.setOnAction(event -> {
-            ListView<User> userListView = (ListView<User>) event.getSource();
-            User user = userListView.getSelectionModel().getSelectedItem();
+            User user = currentSelectedUser;
             try{
                 edit(user);
             }catch(IOException e){
@@ -129,8 +129,7 @@ public class ManageUserController implements Initializable{
         });
         MenuItem deleteMenuItem = new MenuItem("Xoá");
         deleteMenuItem.setOnAction(event -> {
-            ListView<User> userListView = (ListView<User>) event.getSource();
-            User user = userListView.getSelectionModel().getSelectedItem();
+            User user = currentSelectedUser;
             try{
                 delete(user);
             }catch(SQLException e){
@@ -146,7 +145,7 @@ public class ManageUserController implements Initializable{
         }catch(SQLException throwables){
             throwables.printStackTrace();
         }
-        //
+
         employeeList.setDisable(true);
     }
 
@@ -171,8 +170,12 @@ public class ManageUserController implements Initializable{
         Optional<ButtonType> rs = alert.showAndWait();
         if(rs.isPresent() && rs.get() == ButtonType.OK){
             stmt.executeUpdate("DELETE FROM public.\"User\"\n" + "WHERE username = '" + user.getUsername() + "';");
-            //
             customerList.getItems().remove(customerList.getSelectionModel().getSelectedIndex());
+            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+            alert1.setTitle("");
+            alert1.setHeaderText("ĐÃ XOÁ NGƯỜI DÙNG");
+            alert1.setContentText("");
+            alert1.showAndWait();
         }
     }
 

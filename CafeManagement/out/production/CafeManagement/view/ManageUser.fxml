@@ -8,24 +8,24 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="260.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageUserController">
+<BorderPane prefHeight="319.0" prefWidth="254.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageUserController">
     <left>
-        <FlowPane alignment="CENTER_RIGHT" orientation="VERTICAL" prefHeight="260.0" prefWidth="69.0" BorderPane.alignment="CENTER">
+        <FlowPane alignment="CENTER_RIGHT" orientation="VERTICAL" prefHeight="319.0" prefWidth="50.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="refreshBtn" mnemonicParsing="false" onMouseClicked="#refresh" text="Tải lại" textAlignment="CENTER" wrapText="true">
+                <Button fx:id="refreshBtn" mnemonicParsing="false" onMouseClicked="#refresh" style="-fx-background-radius: 10;" text="Tải lại" textAlignment="CENTER" wrapText="true">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                     <FlowPane.margin>
-                        <Insets right="10.0" top="20.0" />
+                        <Insets left="5.0" right="10.0" top="20.0" />
                     </FlowPane.margin>
                 </Button>
-                <Button fx:id="quitBtn" mnemonicParsing="false" onMouseClicked="#quit" text="Thoát" textAlignment="CENTER" wrapText="true">
+                <Button fx:id="quitBtn" mnemonicParsing="false" onMouseClicked="#quit" style="-fx-background-radius: 10;" text="Thoát" textAlignment="CENTER" wrapText="true">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                     <FlowPane.margin>
-                        <Insets right="10.0" top="20.0" />
+                        <Insets left="5.0" right="10.0" top="20.0" />
                     </FlowPane.margin>
                 </Button>
             </children>
@@ -34,13 +34,25 @@
     <right>
         <FlowPane alignment="CENTER" prefHeight="260.0" prefWidth="143.0" BorderPane.alignment="CENTER">
             <children>
-            <Label text="Khách hàng" />
+            <Label text="Khách hàng">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin></Label>
                 <ListView fx:id="customerList" onMouseClicked="#listHandler" prefHeight="107.0" prefWidth="167.0">
                     <FlowPane.margin>
                         <Insets bottom="5.0" right="2.0" />
                     </FlowPane.margin>
                 </ListView>
-            <Label text="Nhân viên" />
+            <Label text="Nhân viên">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <FlowPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </FlowPane.margin></Label>
             <ListView fx:id="employeeList" onMouseClicked="#listHandler" prefHeight="107.0" prefWidth="167.0">
                <padding>
                   <Insets top="5.0" />
@@ -50,6 +62,9 @@
                </FlowPane.margin>
             </ListView>
             </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
         </FlowPane>
     </right>
 </BorderPane>
